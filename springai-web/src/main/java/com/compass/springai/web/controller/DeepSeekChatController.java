@@ -3,7 +3,10 @@ package com.compass.springai.web.controller;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Flux;
+
 import java.util.Map;
+
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,11 +26,15 @@ public class DeepSeekChatController {
     @Autowired
     private ChatClient chatClient;
 
-
-    @GetMapping("/ai/simple")
+    @GetMapping("/simple")
     public Map<String, String> completion(
             @RequestParam(value = "message", defaultValue = "Tell me a joke") String message) {
-        return Map.of("completion", this.chatClient.prompt().user(message).call().content());
+        return Map.of("completion", chatClient.prompt().user(message).call().content());
+    }
+
+    @PostMapping("/stream")
+    public Flux<String> stream(@RequestBody String message) {
+        return chatClient.prompt().user(message).stream().content();
     }
 
 }
