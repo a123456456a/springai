@@ -6,6 +6,10 @@ server:
 spring:
   application:
     name: springai-web
+  # 注册 DotEnv 初始化器（可选，如果使用初始化器方式）
+  # context:
+  #   initializer:
+  #     classes: com.compass.springai.web.config.DotEnvInitializer
   
   # 数据源配置 (H2内存数据库)
   datasource:
@@ -31,7 +35,7 @@ spring:
   ai:
     # 使用官方Spring AI DeepSeek配置
     deepseek:
-      api-key: ${DEEPSEEK_API_KEY}
+      api-key: ${DEEPSEEK_API_KEY:your-deepseek-api-key-here}
       base-url: ${DEEPSEEK_BASE_URL:https://api.deepseek.com}
       chat:
         enabled: true
